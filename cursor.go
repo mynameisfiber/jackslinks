@@ -8,7 +8,6 @@ import (
 // Cursor for list traversal
 type Cursor struct {
 	node *Node
-	head *Node
 }
 
 // NewCursor will create a new cursor object at the given node
@@ -16,11 +15,7 @@ func NewCursor(node *Node) (*Cursor, error) {
 	if node.IsHead() || node.IsTail() {
 		return nil, ErrInvalidCursor
 	}
-	cursor := &Cursor{node, nil}
-	cursor.MoveToHead()
-	cursor.head = cursor.node
-	cursor.node = node
-	return cursor, nil
+	return &Cursor{node}, nil
 }
 
 // MoveToHead moves the cursor to the first element of the list
@@ -39,7 +34,7 @@ func (c *Cursor) MoveToTail() {
 
 // Print will show the LL associated with the current cursor to screen
 func (c *Cursor) Print() {
-	newC := &Cursor{c.node, c.head}
+	newC := &Cursor{c.node}
 	fmt.Printf("CURSOR -> ")
 	for {
 		fmt.Printf("%v <-> ", newC.Get())
@@ -52,7 +47,7 @@ func (c *Cursor) Print() {
 
 // InsertAfter inserts a node after the current cursor
 func (c *Cursor) InsertAfter(value interface{}) (bool, error) {
-	newC := &Cursor{c.node.next, c.head}
+	newC := &Cursor{c.node.next}
 	return newC.InsertBefore(value)
 }
 
