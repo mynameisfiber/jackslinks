@@ -49,3 +49,11 @@ for i := 0; i < 100; i++ {
     }(i)
 }
 ```
+
+Things that a left to do
+------------------------
+
+- Reduce allocations because `malloc` is killing us
+- Find and destroy all race conditions
+- Make the interface nicer (create a list without having to create the first
+  node manually?)

@@ -1,6 +1,7 @@
 package jackslinks
 
 import (
+	"container/list"
 	"sync"
 	"testing"
 )
@@ -76,4 +77,33 @@ func TestHolistic(*testing.T) {
 
 	list.MoveToHead()
 	list.Print()
+}
+
+func BenchmarkJack(b *testing.B) {
+	b.SetParallelism(100)
+	node := NewNode(1)
+	cursor, _ := NewCursor(node)
+
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			cursor.InsertBefore(1)
+		}
+	})
+}
+
+func BenchmarkList(b *testing.B) {
+	b.SetParallelism(100)
+	l := list.New()
+	e1 := l.PushBack(1)
+	var lock sync.Mutex
+
+	b.ResetTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			lock.Lock()
+			l.InsertBefore(1, e1)
+			lock.Unlock()
+		}
+	})
 }

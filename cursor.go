@@ -53,7 +53,7 @@ func (c *Cursor) InsertAfter(value interface{}) (bool, error) {
 
 // InsertBefore inserts a node of given value before the cursor
 func (c *Cursor) InsertBefore(value interface{}) (bool, error) {
-	if c.node.IsHead() {
+	if c.node == nil || c.node.IsHead() {
 		return false, ErrInvalidCursor
 	}
 	for {
